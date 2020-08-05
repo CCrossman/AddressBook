@@ -14,6 +14,10 @@ public class StoredUser {
 	String firstName, lastName;
 	Set<StoredAddress> addresses;
 
+	public String getName() {
+		return firstName + " " + lastName;
+	}
+
 	public User toUser() {
 		return new User(email, firstName, lastName, addresses.stream().map(StoredAddress::toAddress).collect(Collectors.toSet()));
 	}
