@@ -50,7 +50,7 @@ public class ApiController {
 		return userRepository.findAll();
 	}
 
-	@RequestMapping(value = "/user", method = RequestMethod.POST)
+	@RequestMapping(value = "/user", method = {RequestMethod.POST,RequestMethod.PUT})
 	public User createUser(@RequestBody User user) {
 		logger.debug("createUser({})", user);
 		return userRepository.save(user);
