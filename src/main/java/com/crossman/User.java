@@ -1,12 +1,17 @@
 package com.crossman;
 
 import lombok.Value;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.redis.core.RedisHash;
 
-@RedisHash("User")
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Value
 public class User {
-	@Id String email;
+	String email;
 	String firstName, lastName;
+	Set<Address> addresses;
+
+	public StoredUser toStoredUser() {
+		return new StoredUser(email, firstName, lastName, addresses.stream().map(Address::toStoredAddress).collect(Collectors.toSet()));
+	}
 }

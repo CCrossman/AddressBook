@@ -4,5 +4,5 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StoredAddressRepository extends CrudRepository<StoredAddress,String> {
+public interface StoredUserRepository extends CrudRepository<StoredUser, String> {
 }
