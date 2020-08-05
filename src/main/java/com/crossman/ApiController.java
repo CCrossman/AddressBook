@@ -15,6 +15,9 @@ public class ApiController {
 	private StoredAddressRepository storedAddressRepository;
 
 	@Autowired
+	private UserAddressJoinRepository joinRepository;
+
+	@Autowired
 	private UserRepository userRepository;
 
 	@RequestMapping("/addresses")
