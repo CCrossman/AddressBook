@@ -36,6 +36,14 @@ public class ApiController {
 		return storedAddressRepository.findById(id).orElse(null);
 	}
 
+	@RequestMapping(value = "/address/{id}", method = RequestMethod.DELETE)
+	public StoredAddress deleteAddress(@PathVariable("id") String id) {
+		logger.debug("deleteAddress({})", id);
+		Optional<StoredAddress> storedAddressOption = storedAddressRepository.findById(id);
+		storedAddressRepository.deleteById(id);
+		return storedAddressOption.orElse(null);
+	}
+
 	@RequestMapping("/users")
 	public Iterable<User> findAllUsers() {
 		logger.debug("findAllUsers()");
