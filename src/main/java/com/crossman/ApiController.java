@@ -3,10 +3,9 @@ package com.crossman;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 public class ApiController {
@@ -25,5 +24,19 @@ public class ApiController {
 	public User createUser(@RequestBody User user) {
 		logger.debug("createUser({})", user);
 		return userRepository.save(user);
+	}
+
+	@RequestMapping(value = "/user/{email}", method = RequestMethod.GET)
+	public User findUserById(@PathVariable("email") String email) {
+		logger.debug("findUserById({})", email);
+		return userRepository.findById(email).orElse(null);
+	}
+
+	@RequestMapping(value = "/user/{email}", method = RequestMethod.DELETE)
+	public User deleteUser(@PathVariable("email") String email) {
+		logger.debug("deleteUser({})", email);
+		Optional<User> userOption = userRepository.findById(email);
+		userRepository.deleteById(email);
+		return userOption.orElse(null);
 	}
 }
