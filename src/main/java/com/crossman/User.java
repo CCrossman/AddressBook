@@ -2,6 +2,7 @@ package com.crossman;
 
 import lombok.Value;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -12,6 +13,6 @@ public class User {
 	Set<Address> addresses;
 
 	public StoredUser toStoredUser() {
-		return new StoredUser(email, firstName, lastName, addresses.stream().map(Address::toStoredAddress).collect(Collectors.toSet()));
+		return new StoredUser(email, firstName, lastName, addresses == null ? Collections.emptySet() : addresses.stream().map(Address::toStoredAddress).collect(Collectors.toSet()));
 	}
 }
