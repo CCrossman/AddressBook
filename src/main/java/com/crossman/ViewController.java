@@ -49,6 +49,13 @@ public class ViewController {
 		return "userCreated";
 	}
 
+	@RequestMapping(value = "/user", method = RequestMethod.DELETE)
+	public ResponseEntity<String> userDeleted(@RequestBody String email) {
+		logger.debug("userDeleted({})", email);
+		userRepository.deleteById(email);
+		return new ResponseEntity<>("OK", HttpStatus.OK);
+	}
+
 	@RequestMapping("/address")
 	public String addressAdder(Model model) {
 		logger.debug("addressAdder()");

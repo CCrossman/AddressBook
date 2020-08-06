@@ -51,7 +51,7 @@
 
 <table>
 <tr th:each="user: ${users}">
-    <td th:inline="text">
+    <td th:inline="text" th:attr="onclick=|removeUser(this, '${user.email}')|">[X]</span>>
         [[${user.email}]]
         <ul th:each="address: ${user.addresses}">
             <li th:inline="text">[[${address.pretty}]]<span class="close" th:attr="onclick=|removeAddress(this, '${user.email}', '${address.id}')|">X</span></li>
@@ -81,6 +81,20 @@
             cache: false,
             success: function () {
                 liNode.remove();
+            }
+        })
+    }
+
+    function removeUser(self, email) {
+        $.ajax({
+            type: "delete",
+            contentType: "application/text",
+            url: "/user",
+            data: email,
+            dataType: "text",
+            cache: false,
+            success: function () {
+                $(self).remove();
             }
         })
     }
