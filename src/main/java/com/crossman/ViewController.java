@@ -3,8 +3,11 @@ package com.crossman;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -61,6 +64,13 @@ public class ViewController {
 		return "addressAdded";
 	}
 
+	@RequestMapping(value = "/address", method = RequestMethod.DELETE)
+	public ResponseEntity<String> addressDeleted(@RequestBody UserAddressId userAddressId) {
+		logger.debug("addressDeleted({})", userAddressId);
+		removeAddress(userAddressId);
+		return new ResponseEntity<>("OK", HttpStatus.OK);
+	}
+
 	private void addAddress(UserAddress userAddress) {
 		logger.debug("addAddress({})", userAddress);
 		if (userAddress == null || userAddress.getEmail() == null) {
@@ -70,6 +80,20 @@ public class ViewController {
 		userOption.ifPresent(su -> {
 			Set<StoredAddress> addresses = su.getAddresses() == null ? new HashSet<>() : new HashSet<>(su.getAddresses());
 			addresses.add(userAddress.toAddress().toStoredAddress());
+			StoredUser user = new StoredUser(su.getEmail(), su.getFirstName(), su.getLastName(), addresses);
+			userRepository.save(user);
+		});
+	}
+
+	private void removeAddress(UserAddressId userAddressId) {
+		logger.debug("removeAddress({})", userAddressId);
+		if (userAddressId == null || userAddressId.getEmail() == null || userAddressId.getAddressId() == null) {
+			return;
+		}
+		Optional<StoredUser> userOption = userRepository.findById(userAddressId.getEmail());
+		userOption.ifPresent(su -> {
+			Set<StoredAddress> addresses = su.getAddresses() == null ? new HashSet<>() : new HashSet<>(su.getAddresses());
+			addresses.removeIf(sa -> sa.getId().equals(userAddressId.getAddressId()));
 			StoredUser user = new StoredUser(su.getEmail(), su.getFirstName(), su.getLastName(), addresses);
 			userRepository.save(user);
 		});

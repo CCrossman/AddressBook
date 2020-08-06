@@ -3,6 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <title>Users</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Style the list (remove margins and bullets, etc) */
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Style the list items */
+        ul li {
+            border: 1px solid #ddd;
+            margin-top: -1px; /* Prevent double borders */
+            background-color: #f6f6f6;
+            padding: 12px;
+            text-decoration: none;
+            font-size: 18px;
+            color: black;
+            display: block;
+            position: relative;
+        }
+
+        /* Add a light grey background color on hover */
+        ul li:hover {
+            background-color: #eee;
+        }
+
+        /* Style the close button (span) */
+        .close {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            right: 0%;
+            padding: 12px 16px;
+            transform: translate(0%, -50%);
+        }
+
+        .close:hover {background: #bbb;}
+    </style>
 </head>
 <body>
 
@@ -11,7 +54,7 @@
     <td th:inline="text">
         [[${user.email}]]
         <ul th:each="address: ${user.addresses}">
-            <li th:text="${address.pretty}"></li>
+            <li th:inline="text">[[${address.pretty}]]<span class="close" th:attr="onclick=|removeAddress(this, '${user.email}', '${address.id}')|">X</span></li>
         </ul>
     </td>
 </tr>
@@ -19,5 +62,28 @@
 
 <a th:href="@{/user}">Add a User</a>
 <a th:href="@{/address}">Add an Address</a>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function removeAddress(self, email, addressId) {
+        let json = {};
+        json.email = email;
+        json.addressId = addressId;
+
+        let liNode = $(self).parent();
+
+        $.ajax({
+            type: "delete",
+            contentType: "application/json",
+            url: "/address",
+            data: JSON.stringify(json),
+            dataType: "text",
+            cache: false,
+            success: function () {
+                liNode.remove();
+            }
+        })
+    }
+</script>
 </body>
 </html>
