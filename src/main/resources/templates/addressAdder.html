@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add an Address</title>
+</head>
+<body>
+
+<form action="#" th:action="@{/address}" th:object="${address}" method="post">
+    <p>Email: <input type="text" th:field="*{email}" /></p>
+    <p>Type: <select name="type"><option value="HOME">HOME</option><option value="WORK">WORK</option></select></p>
+    <p>Line 1: <input type="text" th:field="*{line1}" /></p>
+    <p>Line 2: <input type="text" th:field="*{line2}" /></p>
+    <p>City: <input type="text" th:field="*{city}" /></p>
+    <p>State: <input type="text" th:field="*{state}" /></p>
+    <p>Zip: <input type="text" th:field="*{zip}" /></p>
+
+    <p><input type="submit" value="Submit" /></p>
+</form>
+
+</body>
+</html>

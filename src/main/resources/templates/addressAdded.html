@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add an Address</title>
+</head>
+<body>
+
+<p>Email: <span th:text="${address.email}"></span></p>
+<p>Type: <span th:text="${address.type}"></span></p>
+<p>Line 1: <span th:text="${address.line1}"></span></p>
+<p>Line 2: <span th:text="${address.line2}"></span></p>
+<p>City: <span th:text="${address.city}"></span></p>
+<p>State: <span th:text="${address.state}"></span></p>
+<p>Zip: <span th:text="${address.zip}"></span></p>
+
+</body>
+</html>
